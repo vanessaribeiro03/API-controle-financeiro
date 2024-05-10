@@ -14,7 +14,7 @@ const listarTransacoes = async (req, res) => {
                 FROM transacoes
                 JOIN categorias ON transacoes.categoria_id = categorias.id
                 WHERE unaccent(categorias.descricao) ILIKE unaccent($1) AND transacoes.usuario_id = $2;`,
-                [`%${filtro}%`, req.usuario.id]
+                [`${filtro}%`, req.usuario.id]
             );
 
             arrayDosObjetos = rows
@@ -92,8 +92,9 @@ const cadastrarTransacao = async (req, res) => {
         FROM transacoes t
         JOIN categorias c ON t.categoria_id = c.id
         WHERE t.id = $1;`, [req.usuario.id]);
-
+       
         return res.json(rows);
+        
 
     } catch (error) {
         return res.status(500).json({ mensagem: "Erro interno no servidor" });

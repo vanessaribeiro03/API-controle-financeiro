@@ -1,5 +1,5 @@
 -- criar banco de dados
-create database dindin_teste;
+create database banco_digital;
 
 
 -- criar tabela usuarios

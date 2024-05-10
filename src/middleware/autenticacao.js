@@ -4,11 +4,11 @@ const pool = require('../connection/pool');
 const tokenDeAutenticacao = async (req, res, next) => {
     const { authorization } = req.headers;
 
-    const token = authorization.split(' ')[1];
-
-    if (!token) {
+    if (!authorization) {
         return res.status(401).json({ mensagem: "Para acessar este recurso um token de autenticação válido deve ser enviado." });
     }
+
+    const token = authorization.split(' ')[1];
 
     try {
 
@@ -27,7 +27,7 @@ const tokenDeAutenticacao = async (req, res, next) => {
         next();
 
     } catch (error) {
-        return res.status(401).json({ mensagem: "Credenciais inválidas" });
+        return res.status(401).json({ mensagem: "Para acessar este recurso um token de autenticação válido deve ser enviado." });
     }
 };
 
