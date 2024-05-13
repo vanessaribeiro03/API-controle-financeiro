@@ -64,40 +64,39 @@ const detalharTransacao = async (req, res) => {
 
 const cadastrarTransacao = async (req, res) => {
     const { descricao, valor, data, categoria_id, tipo } = req.body;
-
+  
     try {
-
-        if (!descricao || !valor || !data || !categoria_id || !tipo) {
-            return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
-        }
-
-        const { rowCount } = await pool.query('select * from categorias where id = $1', [categoria_id]);
-
-        if (rowCount === 0) {
-            return res.status(400).json({ mensagem: "Categoria não encontrada." });
-        }
-
-        if (tipo !== "entrada" && tipo !== "saida") {
-            return res.status(400).json({ mensagem: "Tipo de transação inválida." })
-        }
-
-        const query = `insert into transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) 
+      if (!descricao || !valor || !data || !categoria_id || !tipo) {
+        return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
+      }
+  
+      const { rowCount } = await pool.query('select * from categorias where id = $1', [categoria_id]);
+  
+      if (rowCount === 0) {
+        return res.status(400).json({ mensagem: "Categoria não encontrada." });
+      }
+  
+      if (tipo.toLowerCase() !== "entrada" && tipo.toLowerCase() !== "saida") {
+        return res.status(400).json({ mensagem: "Tipo de transação inválida." });
+      }
+  
+      const query = `insert into transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) 
         VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
-        const params = [descricao, valor, data, categoria_id, req.usuario.id, tipo]
-
-        await pool.query(query, params);
-
-        const { rows } = await pool.query(`
+      const params = [descricao, valor, data, categoria_id, req.usuario.id, tipo];
+  
+      const { rows } = await pool.query(query, params);
+      
+      const transacaoId = rows[0].id;
+  
+      const transacaoCompleta = await pool.query(`
         SELECT t.id, t.tipo, t.descricao, t.valor, t.data, t.usuario_id, t.categoria_id, c.descricao as categoria_nome
         FROM transacoes t
         JOIN categorias c ON t.categoria_id = c.id
-        WHERE t.id = $1;`, [req.usuario.id]);
-       
-        return res.json(rows);
-        
-
+        WHERE t.id = $1;`, [transacaoId]);
+  
+      return res.json(transacaoCompleta.rows[0]);
     } catch (error) {
-        return res.status(500).json({ mensagem: "Erro interno no servidor" });
+      return res.status(500).json({ mensagem: "Erro interno no servidor" });
     }
 };
 

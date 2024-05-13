@@ -1,5 +1,5 @@
 -- criar banco de dados
-create database banco_digital;
+create database controle_financeiro;
 
 
 -- criar tabela usuarios
@@ -27,6 +27,14 @@ create table transacoes(
   categoria_id integer references categorias(id),
   usuario_id integer references usuarios(id),
   tipo text not null
+);
+
+create table saldo (
+  id SERIAL PRIMARY KEY,
+  saldo DECIMAL NOT NULL,
+  data_atualizacao TIMESTAMP default now(),
+  usuario_id INTEGER NOT NULL,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
 

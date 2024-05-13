@@ -44,14 +44,14 @@ const loginUsuario = async (req, res) => {
         const { rows, rowCount } = await pool.query('select * from usuarios where email = $1', [email]);
 
         if (rowCount === 0) {
-            return res.status(400).json({ mensagem: "Usuário e/ou senha inválido(s)." })
+            return res.status(400).json({ mensagem: "Credenciais inválidas." })
         }
 
         const { senha: senhaUsuario, ...usuario } = rows[0];
         const senhaCorreta = await bcrypt.compare(senha, senhaUsuario)
 
         if (!senhaCorreta) {
-            return res.status(401).json({ mensagem: "Usuário e/ou senha inválido(s)." })
+            return res.status(401).json({ mensagem: "Credenciais inválidas." })
         }
 
         const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET_KEY);
