@@ -162,10 +162,18 @@ const obterExtrato = async (req, res) => {
     try {
         const { rows: entradas } = await pool.query('SELECT SUM(valor) as entrada FROM transacoes WHERE tipo = $1 AND usuario_id = $2', ['entrada', req.usuario.id]);
         const { rows: saidas } = await pool.query('SELECT SUM(valor) as saida FROM transacoes WHERE tipo = $1 AND usuario_id = $2', ['saida', req.usuario.id]);
-
+        const { rows: transacoes_entrada } = await pool.query('select * from transacoes where tipo = $1 and usuario_id = $2', ['entrada', req.usuario.id]);
+        const { rows: transacoes_saida } = await pool.query('select * from transacoes where tipo = $1 and usuario_id = $2', ['saida', req.usuario.id])
+        
         const extrato = {
-            entrada: entradas[0].entrada || 0,
-            saida: saidas[0].saida || 0
+            entrada: {
+                total: entradas[0].entrada || 0,
+                transacoes: [transacoes_entrada]
+            },
+            saida: {
+                total: saidas[0].saida || 0,
+                transacoes: [transacoes_saida]
+            } 
         };
 
         return res.status(200).json(extrato);
