@@ -6,11 +6,6 @@ const cadastrarUsuario = async (req, res) => {
     const { nome, email, senha } = req.body;
 
     try {
-
-        if (!nome || !email || !senha) {
-            return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
-        }
-
         const { rowCount } = await pool.query('select * from usuarios where email = $1', [email]);
 
         if (rowCount > 0) {
@@ -36,11 +31,6 @@ const loginUsuario = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
-
-        if (!email || !senha) {
-            return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
-        }
-
         const { rows, rowCount } = await pool.query('select * from usuarios where email = $1', [email]);
 
         if (rowCount === 0) {
@@ -62,7 +52,6 @@ const loginUsuario = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ mensagem: "Erro interno no servidor" });
     }
 };
@@ -75,11 +64,6 @@ const atualizarUsuario = async (req, res) => {
     const { nome, email, senha } = req.body
 
     try {
-
-        if (!nome || !email || !senha) {
-            return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
-        }
-
         const { rowCount } = await pool.query('select * from usuarios where email = $1 and id != $2', [email, req.usuario.id]);
 
         if (rowCount > 0) {
