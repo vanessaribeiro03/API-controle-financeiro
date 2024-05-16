@@ -160,26 +160,47 @@ const excluirTransacao = async (req, res) => {
 
 const obterExtrato = async (req, res) => {
     try {
-        const { rows: entradas } = await pool.query('SELECT SUM(valor) as entrada FROM transacoes WHERE tipo = $1 AND usuario_id = $2', ['entrada', req.usuario.id]);
-        const { rows: saidas } = await pool.query('SELECT SUM(valor) as saida FROM transacoes WHERE tipo = $1 AND usuario_id = $2', ['saida', req.usuario.id]);
-        const { rows: transacoes_entrada } = await pool.query('select * from transacoes where tipo = $1 and usuario_id = $2', ['entrada', req.usuario.id]);
-        const { rows: transacoes_saida } = await pool.query('select * from transacoes where tipo = $1 and usuario_id = $2', ['saida', req.usuario.id])
+        const extratoQuery = ` 
+        SELECT tipo, SUM(CASE WHEN tipo = 'entrada' THEN valor ELSE 0 END) as entrada, 
+        SUM(CASE WHEN tipo = 'saida' THEN valor ELSE 0 END) as saida
+        FROM transacoes WHERE usuario_id = $1 GROUP BY tipo`;
+        const {rows} = await pool.query(extratoQuery, [req.usuario.id])
+
+        const transacoesQuery = `
+            SELECT * FROM transacoes WHERE usuario_id = $1 AND tipo IN ('entrada', 'saida')
+        `;
+        const { rows: transacoes } = await pool.query(transacoesQuery, [req.usuario.id]);
         
         const extrato = {
             entrada: {
-                total: entradas[0].entrada || 0,
-                transacoes: [transacoes_entrada]
+                total: 0,
+                transacoes: []
             },
             saida: {
-                total: saidas[0].saida || 0,
-                transacoes: [transacoes_saida]
+                total: 0,
+                transacoes: []
             } 
         };
+
+        rows.forEach(row => {
+            if (row.tipo === 'entrada') {
+                extrato.entrada.total = row.entrada;
+            } else if (row.tipo === 'saida') {
+                extrato.saida.total = row.saida;
+            }
+        });
+
+        transacoes.forEach(transacao => {
+            if (transacao.tipo === 'entrada') {
+                extrato.entrada.transacoes.push(transacao);
+            } else if (transacao.tipo === 'saida') {
+                extrato.saida.transacoes.push(transacao);
+            }
+        });
 
         return res.status(200).json(extrato);
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ mensagem: "Erro interno no servidor." });
     }
 };
