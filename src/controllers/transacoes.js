@@ -1,4 +1,5 @@
 const pool = require('../connection/pool');
+const { createOrUpdateTransactionSchema } = require('../schemas/schema-transactions');
 
 const listarTransacoes = async (req, res) => {
     const { filtro } = req.query;
@@ -63,13 +64,15 @@ const detalharTransacao = async (req, res) => {
 };
 
 const cadastrarTransacao = async (req, res) => {
-    const { descricao, valor, data, categoria_id, tipo } = req.body;
+    let { descricao, valor, data, categoria_id, tipo } = req.body;
   
-    try {
-      if (!descricao || !valor || !data || !categoria_id || !tipo) {
-        return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
+    try {   
+      const { error, value } = createOrUpdateTransactionSchema.validate(req.body, { convert: false });
+
+      if (error) {
+        return res.status(400).json({ mensage: error.details[0].message });
       }
-  
+
       const { rowCount } = await pool.query('select * from categorias where id = $1', [categoria_id]);
   
       if (rowCount === 0) {
@@ -80,9 +83,15 @@ const cadastrarTransacao = async (req, res) => {
         return res.status(400).json({ mensagem: "Tipo de transação inválida." });
       }
   
-      const query = `insert into transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) 
-        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
-      const params = [descricao, valor, data, categoria_id, req.usuario.id, tipo];
+      const query = data
+        ? `INSERT INTO transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) 
+           VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
+        : `INSERT INTO transacoes (descricao, valor, categoria_id, usuario_id, tipo) 
+           VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+
+      const params = data
+        ? [descricao, valor, data, categoria_id, req.usuario.id, tipo]
+        : [descricao, valor, categoria_id, req.usuario.id, tipo];
   
       const { rows } = await pool.query(query, params);
       
@@ -95,6 +104,7 @@ const cadastrarTransacao = async (req, res) => {
         WHERE t.id = $1;`, [transacaoId]);
   
       return res.json(transacaoCompleta.rows[0]);
+      
     } catch (error) {
       return res.status(500).json({ mensagem: "Erro interno no servidor" });
     }
@@ -106,14 +116,16 @@ const atualizarTransacao = async (req, res) => {
 
     try {
 
+        const { error, value } = createOrUpdateTransactionSchema.validate(req.body, { convert: false });
+
+        if (error) {
+            return res.status(400).json({ mensage: error.details[0].message });
+        }
+
         const { rowCount: transacao } = await pool.query('select * from transacoes where id = $1 and usuario_id = $2', [id, req.usuario.id]);
 
         if (transacao === 0) {
             return res.status(404).json({ mensagem: "Transação não encontrada." });
-        }
-
-        if (!descricao || !valor || !data || !categoria_id || !tipo) {
-            return res.status(400).json({ mensagem: "Todos os campos obrigatórios devem ser informados." });
         }
 
         const { rowCount: categoria } = await pool.query('select * from categorias where id = $1', [categoria_id]);

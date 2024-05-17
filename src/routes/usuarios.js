@@ -7,17 +7,17 @@ const {
 } = require('../controllers/usuarios');
 
 const tokenDeAutenticacao = require('../middleware/autenticacao');
-const { createUserSchema, loginUserSchema, updateUserSchema } = require('../schemas/schema-user');
+const { createOrUpdateUserSchema, loginUserSchema,  } = require('../schemas/schema-user');
 const validateRequestBody = require('../middleware/validate-request-body');
 
 const rotas = express();
 
-rotas.post('/usuario', validateRequestBody(createUserSchema), cadastrarUsuario);
+rotas.post('/usuario', validateRequestBody(createOrUpdateUserSchema), cadastrarUsuario);
 rotas.post('/login', validateRequestBody(loginUserSchema), loginUsuario);
 
 rotas.use(tokenDeAutenticacao);
 
 rotas.get('/usuario', detalharUsuario);
-rotas.put('/usuario', validateRequestBody(updateUserSchema), atualizarUsuario);
+rotas.put('/usuario', validateRequestBody(createOrUpdateUserSchema), atualizarUsuario);
 
 module.exports = rotas;

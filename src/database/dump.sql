@@ -23,7 +23,7 @@ create table transacoes(
   id serial primary key,
 	descricao text not null,
   valor numeric not null,
-  data date not null,
+  data date DEFAULT CURRENT_DATE,
   categoria_id integer references categorias(id),
   usuario_id integer references usuarios(id),
   tipo text not null

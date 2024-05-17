@@ -2,11 +2,14 @@ const passwordInvalid = 'enter a password with at least 8 characters, containing
 const isRequired = 'all fields are mandatory'
 const emailValid = 'enter a valid email address'
 const firtsAndLastName = 'enter first and last name'
+const isNumber = 'valor must be a number'
+
 
 
 module.exports = {
     passwordInvalid,
     isRequired,
     emailValid,
-    firtsAndLastName
+    firtsAndLastName,
+    isNumber
 }
