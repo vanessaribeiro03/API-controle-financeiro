@@ -7,7 +7,7 @@ Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software
 
 ## Índice:
 * [Instalaçao e configuração](#instalação-e-configuração)
-* [Funcionalidades e demonstração da aplicação](funcionalidades-e-demonstração-da-apliacação)
+* [Funcionalidades e demonstração da aplicação](funcionalidades-e-demonstração-da-aplicação)
 * [Tecnologias utilizadas]
 
 ## Instalação e configuração:
@@ -43,4 +43,16 @@ npm install
 npm run dev
 ```
 ## Funcionalidades e demonstração da aplicação:
+* [Cadastrar Usuário]
+* [Fazer Login]
+* [Detalhar Perfil do Usuário Logado]
+* [Editar Perfil do Usuário Logado]
+* [Listar categorias]
+* [Listar transações]
+* [Detalhar transação]
+* [Cadastrar transação]
+* [Editar transação]
+* [Remover transação]
+* [Obter extrato de transações]
+
 
