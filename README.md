@@ -44,7 +44,7 @@ npm run dev
 ```
 ## Funcionalidades e demonstração da aplicação:
 * [Cadastrar Usuário](#cadastrar-usuário)
-* [Fazer Login](#)
+* [Fazer Login](#fazer-login)
 * [Detalhar Perfil do Usuário Logado](#)
 * [Editar Perfil do Usuário Logado](#)
 * [Listar categorias](#)
@@ -56,5 +56,20 @@ npm run dev
 * [Obter extrato de transações](#)
 
 ### Cadastrar Usuário
+#### `POST` `/usuario`
+Essa é a rota que será utilizada para cadastrar um novo usuario no sistema.
+
+### Fazer login
+#### `POST` `/login`
+Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
+
+### Detalhar Perfil do Usuário Logado
+#### `GET` `/usuario`
+Essa é a rota que será chamada quando o usuario quiser obter os dados do seu próprio perfil.
+
+
+
+
+
 
 
