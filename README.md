@@ -43,16 +43,18 @@ npm install
 npm run dev
 ```
 ## Funcionalidades e demonstração da aplicação:
-* [Cadastrar Usuário]
-* [Fazer Login]
-* [Detalhar Perfil do Usuário Logado]
-* [Editar Perfil do Usuário Logado]
-* [Listar categorias]
-* [Listar transações]
-* [Detalhar transação]
-* [Cadastrar transação]
-* [Editar transação]
-* [Remover transação]
-* [Obter extrato de transações]
+* [Cadastrar Usuário](#cadastrar-usuário)
+* [Fazer Login](#)
+* [Detalhar Perfil do Usuário Logado](#)
+* [Editar Perfil do Usuário Logado](#)
+* [Listar categorias](#)
+* [Listar transações](#)
+* [Detalhar transação](#)
+* [Cadastrar transação](#)
+* [Editar transação](#)
+* [Remover transação](#)
+* [Obter extrato de transações](#)
+
+### Cadastrar Usuário
 
 
