@@ -7,7 +7,7 @@ Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software
 
 ## Índice:
 * [Instalaçao e configuração](#instalação-e-configuração)
-* [Funcionalidades e demonstração da aplicação](funcionalidades-e-demonstração-da-aplicação)
+* [Funcionalidades e demonstração da aplicação](#funcionalidades-e-demonstração-da-aplicação)
 * [Tecnologias utilizadas]
 
 ## Instalação e configuração:
