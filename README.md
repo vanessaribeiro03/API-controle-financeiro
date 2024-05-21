@@ -7,7 +7,7 @@ Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software
 
 ## Índice:
 * [Instalaçao e configuração](#instalação-e-configuração)
-* [Funcionalidades e demonstração da aplicação]
+* [Funcionalidades e demonstração da aplicação](funcionalidades-e-demonstração-da-apliacação)
 * [Tecnologias utilizadas]
 
 ## Instalação e configuração:
@@ -34,5 +34,13 @@ PGPORT= porta-do-servidor-postgresql
 
 JWT_SECRET_KEY= chave-secreta-para-assinar-token-jwt
 ```
-
+5. Instale as dependências do projeto:
+```bash
+npm install
+```
+6. Execute a aplicação:
+```bash
+npm run dev
+```
+## Funcionalidades e demonstração da aplicação:
 
