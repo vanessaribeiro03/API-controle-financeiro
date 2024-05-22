@@ -45,15 +45,15 @@ npm run dev
 ## Funcionalidades e demonstração da aplicação:
 * [Cadastrar Usuário](#cadastrar-usuário)
 * [Fazer Login](#fazer-login)
-* [Detalhar Perfil do Usuário Logado](#)
-* [Editar Perfil do Usuário Logado](#)
-* [Listar categorias](#)
-* [Listar transações](#)
-* [Detalhar transação](#)
-* [Cadastrar transação](#)
-* [Editar transação](#)
-* [Remover transação](#)
-* [Obter extrato de transações](#)
+* [Detalhar Perfil do Usuário Logado](#detalhar-perfil-do-usuário-logado)
+* [Editar Perfil do Usuário Logado](#editar-perfil-do-usuário-logado)
+* [Listar categorias](#listar-categorias)
+* [Listar transações](#listar-transações)
+* [Detalhar transação](#detalhar-transação)
+* [Cadastrar transação](#cadastrar-transação)
+* [Editar transação](#editar-transação)
+* [Remover transação](#remover-transação)
+* [Obter extrato de transações](#obter-extrato-de-transações)
 
 ### Cadastrar Usuário
 #### `POST` `/usuario`
@@ -67,8 +67,37 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
 #### `GET` `/usuario`
 Essa é a rota que será chamada quando o usuario quiser obter os dados do seu próprio perfil.
 
+### Editar Perfil do Usuário Logado
+#### `PUT` `/usuario`
+Essa é a rota que será chamada quando o usuário quiser realizar alterações no seu próprio usuário.
 
+### Listar Categorias
+#### `GET` `/categoria`
+Essa é a rota que será chamada quando o usuario logado quiser listar todas as categorias cadastradas.
 
+### Listar Transações
+#### `GET` `/transacao`
+Essa é a rota que será chamada quando o usuario logado quiser listar todas as suas transações cadastradas.
+
+### Detalhar Transação
+#### `GET` `/transacao:id`
+Essa é a rota que será chamada quando o usuario logado quiser obter uma das suas transações cadastradas.
+
+### Cadastrar Transação
+#### `POST` `/transacao`
+Essa é a rota que será utilizada para cadastrar uma transação associada ao usuário logado.
+
+### Editar Transação
+#### `PUT` `/transacao:id`
+Essa é a rota que será chamada quando o usuario logado quiser atualizar uma das suas transações cadastradas.
+
+### Remover Transação
+#### `DELETE` `/transacao:id`
+Essa é a rota que será chamada quando o usuario logado quiser excluir uma das suas transações cadastradas.
+
+### Obter extrato de transações
+#### `GET` `/transacao/extrato`
+Essa é a rota que será chamada quando o usuario logado quiser obter o extrato de todas as suas transações cadastradas
 
 
 
