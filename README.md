@@ -8,7 +8,7 @@ Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software
 ## Índice:
 * [Instalaçao e configuração](#instalação-e-configuração)
 * [Funcionalidades e demonstração da aplicação](#funcionalidades-e-demonstração-da-aplicação)
-* [Tecnologias utilizadas]
+* [Tecnologias utilizadas](#tecnologias-utilizadas)
 
 ## Instalação e configuração:
 ### Pré-requisitos
@@ -99,6 +99,9 @@ Essa é a rota que será chamada quando o usuario logado quiser excluir uma das 
 #### `GET` `/transacao/extrato`
 Essa é a rota que será chamada quando o usuario logado quiser obter o extrato de todas as suas transações cadastradas
 
-
+## Tecnologias utilizadas:
+* JavaScript
+* Node.js
+* PostgreSQL
 
 
