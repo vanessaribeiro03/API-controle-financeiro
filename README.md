@@ -102,6 +102,7 @@ Essa é a rota que será chamada quando o usuario logado quiser obter o extrato 
 ## Tecnologias utilizadas:
 * JavaScript
 * Node.js
+* Express
 * PostgreSQL
 
 
