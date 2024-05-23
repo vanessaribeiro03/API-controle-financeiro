@@ -3,10 +3,10 @@
 <img src="https://res.cloudinary.com/dnuhmdhlu/image/upload/v1716316865/controle-financeiro_pxw72y.jpg" width="200"/>
 
 ## Sobre o Projeto:
-Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software](https://cubos.academy/cursos/desenvolvimento-de-software) com foco em Backend da turma B2B T10 da [Cubos Academy](https://cubos.academy/), com melhorias adicionais. O objetivo foi criar uma aplicação de controle financeiro onde os usuários podem criar seus perfis e cadastrar transações, facilitando o acompanhamento e o controle de suas finanças pessoais.
+Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software](https://cubos.academy/cursos/desenvolvimento-de-software) com foco em Backend da [Cubos Academy](https://cubos.academy/), com melhorias adicionais. O objetivo foi criar uma aplicação de controle financeiro onde os usuários podem criar seus perfis e cadastrar transações, facilitando o acompanhamento e o controle de suas finanças pessoais.
 
 ## Índice:
-* [Instalaçao e configuração](#instalação-e-configuração)
+* [Instalação e configuração](#instalação-e-configuração)
 * [Funcionalidades e demonstração da aplicação](#funcionalidades-e-demonstração-da-aplicação)
 * [Tecnologias utilizadas](#tecnologias-utilizadas)
 
@@ -15,7 +15,7 @@ Projeto baseado no desafio do módulo 3 do curso de [Desenvolvimento de Software
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas: [Node.js](https://nodejs.org/en/download/package-manager/current), [Git](https://git-scm.com/downloads), [VSCode](https://code.visualstudio.com/download), [PostgreSQL](https://www.postgresql.org/download/) e o [Beekeeper Studio](https://www.beekeeperstudio.io/get-community)
 
 ### Agora é só seguir os seguintes passos:
-1. Faça o fork desse repositório para o seu perfil do Github
+1. Faça o fork desse repositório para o seu perfil do Github.
 2. Clone o seu repositório em sua máquina:
 ```bash
 git clone git@github.com:seu-perfil/API-controle-financeiro.git
@@ -43,6 +43,7 @@ npm install
 npm run dev
 ```
 ## Funcionalidades e demonstração da aplicação:
+Essa aplicação tem as seguintes funcionaidades:
 * [Cadastrar Usuário](#cadastrar-usuário)
 * [Fazer Login](#fazer-login)
 * [Detalhar Perfil do Usuário Logado](#detalhar-perfil-do-usuário-logado)
@@ -57,7 +58,7 @@ npm run dev
 
 ### Cadastrar Usuário
 #### `POST` `/usuario`
-Essa é a rota que será utilizada para cadastrar um novo usuario no sistema. 
+Essa é a rota que será utilizada para cadastrar um novo usuário no sistema. 
 #### Exemplo da requisição:
 ```javascript
 {
@@ -78,7 +79,7 @@ Essa é a rota que será utilizada para cadastrar um novo usuario no sistema.
 
 ### Fazer login
 #### `POST` `/login`
-Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
+Essa é a rota que permite o usuário cadastrado realizar o login no sistema.
 #### Exemplo da requisição:
 ```javascript
 {
@@ -98,11 +99,11 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
 }
 ```
 
-## **Importante:** Todas as funcionalidades abaixo serão exigidas um token de autenticação do usuário logado. Portanto, é necessario informar o token para poder ter acesso a elas.
+## **Importante:** Todas as funcionalidades abaixo serão exigidas um token de autenticação do usuário logado. Portanto, é necessário informar o token para ter acesso a elas.
 
 ### Detalhar Perfil do Usuário Logado
 #### `GET` `/usuario`
-Essa é a rota que será chamada quando o usuario quiser obter os dados do seu próprio perfil.
+Essa é a rota que será chamada quando o usuário quiser obter os dados do seu próprio perfil.
 #### Resposta:
 ``` javascript
 {
@@ -114,7 +115,7 @@ Essa é a rota que será chamada quando o usuario quiser obter os dados do seu p
 
 ### Editar Perfil do Usuário Logado
 #### `PUT` `/usuario`
-Essa é a rota que será chamada quando o usuário quiser realizar alterações no seu próprio usuário.
+Essa é a rota que será chamada quando o usuário quiser realizar alterações no seu próprio perfil.
 #### Exemplo da requisição:
 ```javascript
 {
@@ -130,8 +131,8 @@ Essa é a rota que será chamada quando o usuário quiser realizar alterações 
 
 ### Listar Categorias
 #### `GET` `/categoria`
-Essa é a rota que será chamada quando o usuario logado quiser listar todas as categorias cadastradas.
-#### Resposta: (_existem mais categorias cadastradas mas essas são para exemplificar a resposta_)
+Essa é a rota que será chamada quando o usuário logado quiser listar todas as categorias cadastradas.
+#### Resposta: (_Existem mais categorias cadastradas, mas estas são apenas para exemplificar a resposta._)
 ``` javascript
 [
 	{
@@ -151,13 +152,51 @@ Essa é a rota que será chamada quando o usuario logado quiser listar todas as 
 
 ### Listar Transações
 #### `GET` `/transacao`
-Essa é a rota que será chamada quando o usuario logado quiser listar todas as suas transações cadastradas.
+Essa é a rota que será chamada quando o usuário logado quiser listar todas as suas transações cadastradas.
 #### Resposta:
+``` javascript
+[
+	{
+		"id": 1,
+		"tipo": "entrada",
+		"descricao": "Salário acabou de cair na conta",
+		"valor": "300000",
+		"data": "2024-05-23T03:00:00.000Z",
+		"usuario_id": 1,
+		"categoria_id": 14,
+		"categoria_nome": "Salário"
+	},
+	{
+		"id": 2,
+		"tipo": "saida",
+		"descricao": "Compra de camisa",
+		"valor": "5000",
+		"data": "2024-05-23T03:00:00.000Z",
+		"usuario_id": 1,
+		"categoria_id": 11,
+		"categoria_nome": "Roupas"
+	}
+]
+```
 
 ### Detalhar Transação
 #### `GET` `/transacao:id`
-Essa é a rota que será chamada quando o usuario logado quiser obter uma das suas transações cadastradas.
+Essa é a rota que será chamada quando o usuário logado quiser obter uma das suas transações cadastradas.
 #### Resposta:
+``` javascript
+[
+	{
+		"id": 1,
+		"tipo": "entrada",
+		"descricao": "Salário acabou de cair na conta",
+		"valor": "300000",
+		"data": "2024-05-23T03:00:00.000Z",
+		"usuario_id": 1,
+		"categoria_id": 14,
+		"categoria_nome": "Salário"
+	}
+]
+```
 
 ### Cadastrar Transação
 #### `POST` `/transacao`
@@ -172,7 +211,7 @@ Essa é a rota que será utilizada para cadastrar uma transação associada ao u
 }
 ```
 #### Resposta:
-``` javacript
+``` javascript
 {
 	"id": 1,
 	"tipo": "entrada",
@@ -187,7 +226,7 @@ Essa é a rota que será utilizada para cadastrar uma transação associada ao u
 
 ### Editar Transação
 #### `PUT` `/transacao:id`
-Essa é a rota que será chamada quando o usuario logado quiser atualizar uma das suas transações cadastradas.
+Essa é a rota que será chamada quando o usuário logado quiser atualizar uma das suas transações cadastradas.
 #### Exemplo de requisição:
 ``` javascript
 {
@@ -203,11 +242,48 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar uma da
 ```
 ### Remover Transação
 #### `DELETE` `/transacao:id`
-Essa é a rota que será chamada quando o usuario logado quiser excluir uma das suas transações cadastradas.
+Essa é a rota que será chamada quando o usuário logado quiser excluir uma das suas transações cadastradas.
+#### Resposta:
+``` javascript
+// No body returned for response
+```
 
 ### Obter extrato de transações
 #### `GET` `/transacao/extrato`
-Essa é a rota que será chamada quando o usuario logado quiser obter o extrato de todas as suas transações cadastradas
+Essa é a rota que será chamada quando o usuário logado quiser obter o extrato de todas as suas transações cadastradas
+#### Resposta:
+``` javascript
+{
+	"entrada": {
+		"total": "300000",
+		"transacoes": [
+			{
+				"id": 1,
+				"descricao": "Salário acabou de cair na conta",
+				"valor": "300000",
+				"data": "2024-05-23T03:00:00.000Z",
+				"categoria_id": 14,
+				"usuario_id": 1,
+				"tipo": "entrada"
+			}
+		]
+	},
+	"saida": {
+		"total": "5000",
+		"transacoes": [
+			{
+				"id": 2,
+				"descricao": "Compra de camisa",
+				"valor": "5000",
+				"data": "2024-05-23T03:00:00.000Z",
+				"categoria_id": 11,
+				"usuario_id": 1,
+				"tipo": "saida"
+			}
+		]
+	}
+}
+```
 
 ## Tecnologias utilizadas:
 * JavaScript
