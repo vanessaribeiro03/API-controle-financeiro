@@ -67,44 +67,39 @@ const createTransactions = async (req, res) => {
     let { descricao, valor, data, categoria_id, tipo } = req.body;
   
     try {   
-      const { error, value } = createOrUpdateTransactionSchema.validate(req.body, { convert: false });
+        const { error } = createOrUpdateTransactionSchema.validate(req.body, { convert: false });
 
-      if (error) {
-        return res.status(400).json({ mensage: error.details[0].message });
-      }
+        if (error) {
+            return res.status(400).json({ mensagem: error.details[0].message });
+        }
 
-      const { rowCount } = await pool.query('select * from categorias where id = $1', [categoria_id]);
-  
-      if (rowCount === 0) {
-        return res.status(400).json({ mensagem: "Category not found." });
-      }
-  
-      const query = data
-        ? `INSERT INTO transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) 
-           VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
-        : `INSERT INTO transacoes (descricao, valor, categoria_id, usuario_id, tipo) 
-           VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+        const { rowCount } = await pool.query('SELECT * FROM categorias WHERE id = $1', [categoria_id]);
 
-      const params = data
-        ? [descricao, valor, data, categoria_id, req.usuario.id, tipo]
-        : [descricao, valor, categoria_id, req.usuario.id, tipo];
-  
-      const { rows } = await pool.query(query, params);
-      
-      const transacaoId = rows[0].id;
-  
-      const transacaoCompleta = await pool.query(`
-        SELECT t.id, t.tipo, t.descricao, t.valor, t.data, t.usuario_id, t.categoria_id, c.descricao as categoria_nome
-        FROM transacoes t
-        JOIN categorias c ON t.categoria_id = c.id
-        WHERE t.id = $1;`, [transacaoId]);
-  
-      return res.json(transacaoCompleta.rows[0]);
-      
+        if (rowCount === 0) {
+            return res.status(400).json({ mensagem: "Category not found." });
+        }
+
+        const query = `INSERT INTO transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) 
+                       VALUES ($1, $2, COALESCE($3, CURRENT_DATE), $4, $5, $6) RETURNING *`;
+
+        const params = [descricao, valor, data || null, categoria_id, req.usuario.id, tipo];
+
+        const { rows } = await pool.query(query, params);
+        const transacaoId = rows[0].id;
+
+        const transacaoCompleta = await pool.query(`
+            SELECT t.id, t.tipo, t.descricao, t.valor, t.data, t.usuario_id, t.categoria_id, c.descricao AS categoria_nome
+            FROM transacoes t
+            JOIN categorias c ON t.categoria_id = c.id
+            WHERE t.id = $1;`, [transacaoId]);
+
+        return res.json(transacaoCompleta.rows[0]);
+
     } catch (error) {
-      return res.status(500).json({ mensagem: "internal server error." });
+        return res.status(500).json({ mensagem: "Internal server error." });
     }
 };
+
 
 const updateTransactions = async (req, res) => {
     const { id } = req.params;
@@ -130,8 +125,12 @@ const updateTransactions = async (req, res) => {
             return res.status(400).json({ mensagem: "Category not found." });
         }
 
-        const query = 'update transacoes set descricao = $1, valor = $2, data = $3, categoria_id = $4, tipo = $5 where id = $6';
-        const params = [descricao, valor, data, categoria_id, tipo, id];
+        const query = `
+            UPDATE transacoes
+            SET descricao = $1, valor = $2, data = COALESCE($3, CURRENT_DATE), categoria_id = $4, tipo = $5
+            WHERE id = $6
+        `;
+        const params = [descricao, valor, data || null, categoria_id, tipo, id];
 
         await pool.query(query, params);
 
