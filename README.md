@@ -291,4 +291,6 @@ Essa é a rota que será chamada quando o usuário logado quiser obter o extrato
 * Express
 * PostgreSQL
 
+## Licença
+Feito com ❤️ por Vanessa Ribeiro
 
