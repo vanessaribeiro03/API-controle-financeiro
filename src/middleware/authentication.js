@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const pool = require('../connection/pool');
 
-const tokenDeAutenticacao = async (req, res, next) => {
+const authToken = async (req, res, next) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        return res.status(401).json({ mensagem: "Para acessar este recurso um token de autenticação válido deve ser enviado." });
+        return res.status(401).json({ mensagem: "To access this feature a valid authentication token must be sent." });
     }
 
     const token = authorization.split(' ')[1];
@@ -17,7 +17,7 @@ const tokenDeAutenticacao = async (req, res, next) => {
         const { rows, rowCount } = await pool.query('select * from usuarios where id = $1', [id]);
 
         if (rowCount === 0) {
-            return res.status(404).json({ mensagem: "Usuário não encontrado" });
+            return res.status(404).json({ mensagem: "User not found." });
         }
 
         const { senha, ...usuario } = rows[0];
@@ -27,8 +27,8 @@ const tokenDeAutenticacao = async (req, res, next) => {
         next();
 
     } catch (error) {
-        return res.status(401).json({ mensagem: "Para acessar este recurso um token de autenticação válido deve ser enviado." });
+        return res.status(401).json({ mensagem: "To access this feature a valid authentication token must be sent." });
     }
 };
 
-module.exports = tokenDeAutenticacao;
+module.exports = authToken;

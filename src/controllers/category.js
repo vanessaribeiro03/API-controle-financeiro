@@ -1,6 +1,6 @@
 const pool = require('../connection/pool');
 
-const listarCategorias = async (req, res) => {
+const listCategorires = async (req, res) => {
     try {
 
         const { rows } = await pool.query('select * from categorias');
@@ -8,8 +8,8 @@ const listarCategorias = async (req, res) => {
         return res.json(rows);
 
     } catch (error) {
-        return res.status(500).json({ mensagem: "Erro interno no servidor" });
+        return res.status(500).json({ mensagem: "internal server error." });
     }
 };
 
-module.exports = listarCategorias;
+module.exports = listCategorires;

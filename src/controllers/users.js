@@ -2,14 +2,14 @@ const pool = require('../connection/pool');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const cadastrarUsuario = async (req, res) => {
+const createUser = async (req, res) => {
     const { nome, email, senha } = req.body;
 
     try {
         const { rowCount } = await pool.query('select * from usuarios where email = $1', [email]);
 
         if (rowCount > 0) {
-            return res.status(400).json({ mensagem: "Já existe usuário cadastrado com o e-mail informado." });
+            return res.status(400).json({ mensagem: "There is already a registered user with the email provided." });
         }
 
         const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -23,25 +23,25 @@ const cadastrarUsuario = async (req, res) => {
         return res.status(201).json(dadosDoUsuario);
 
     } catch (error) {
-        return res.status(500).json({ mensagem: "Erro interno no servidor" });
+        return res.status(500).json({ mensagem: "internal server error." });
     }
 };
 
-const loginUsuario = async (req, res) => {
+const login = async (req, res) => {
     const { email, senha } = req.body;
 
     try {
         const { rows, rowCount } = await pool.query('select * from usuarios where email = $1', [email]);
 
         if (rowCount === 0) {
-            return res.status(400).json({ mensagem: "Credenciais inválidas." })
+            return res.status(400).json({ mensagem: "invalid credentials" })
         }
 
         const { senha: senhaUsuario, ...usuario } = rows[0];
         const senhaCorreta = await bcrypt.compare(senha, senhaUsuario)
 
         if (!senhaCorreta) {
-            return res.status(401).json({ mensagem: "Credenciais inválidas." })
+            return res.status(401).json({ mensagem: "invalid credentials" })
         }
 
         const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET_KEY);
@@ -52,22 +52,22 @@ const loginUsuario = async (req, res) => {
         })
 
     } catch (error) {
-        return res.status(500).json({ mensagem: "Erro interno no servidor" });
+        return res.status(500).json({ mensagem: "internal server error." });
     }
 };
 
-const detalharUsuario = async (req, res) => {
+const detailUser = async (req, res) => {
     return res.json(req.usuario);
 };
 
-const atualizarUsuario = async (req, res) => {
+const updateUser = async (req, res) => {
     const { nome, email, senha } = req.body
 
     try {
         const { rowCount } = await pool.query('select * from usuarios where email = $1 and id != $2', [email, req.usuario.id]);
 
         if (rowCount > 0) {
-            return res.status(400).json({ mensagem: "O e-mail informado já está sendo utilizado por outro usuário." });
+            return res.status(400).json({ mensagem: "The email provided is already being used by another user." });
         }
 
         const senhaCriptografada = await bcrypt.hash(senha, 10);
@@ -80,13 +80,13 @@ const atualizarUsuario = async (req, res) => {
         return res.status(204).send();
 
     } catch (error) {
-        return res.status(500).json({ mensagem: "Erro interno no servidor" });
+        return res.status(500).json({ mensagem: "internal server error." });
     }
 };
 
 module.exports = {
-    cadastrarUsuario,
-    loginUsuario,
-    detalharUsuario,
-    atualizarUsuario
+    createUser,
+    login,
+    detailUser,
+    updateUser
 };
