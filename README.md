@@ -57,40 +57,150 @@ npm run dev
 
 ### Cadastrar Usuário
 #### `POST` `/usuario`
-Essa é a rota que será utilizada para cadastrar um novo usuario no sistema.
+Essa é a rota que será utilizada para cadastrar um novo usuario no sistema. 
+#### Exemplo da requisição:
+```javascript
+{
+	"nome": "José Mario",
+	"email": "josemario@email.com",
+	"senha": "!@#12Jose"
+}
+```
+#### *_lembrando que a senha é criptografada antes de ser cadastrada no banco de dados._*
+#### Resposta:
+```javascript
+{
+	"id": 1,
+	"nome": "José Mario",
+	"email": "josemario@email.com"
+}
+```
 
 ### Fazer login
 #### `POST` `/login`
 Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
+#### Exemplo da requisição:
+```javascript
+{
+	"email": "josemario@email.com",
+	"senha": "!@#12Jose"
+}
+```
+#### Resposta:
+```javascript
+{
+	"usuario": {
+		"id": 1,
+		"nome": "José Mario",
+		"email": "josemario@email.com"
+	},
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2NDgxMDg2fQ.ymzLHE2yr0ApugOzaZn9NQdjRNkbGpXgyPGnstATyA4"
+}
+```
+
+## **Importante:** Todas as funcionalidades abaixo serão exigidas um token de autenticação do usuário logado. Portanto, é necessario informar o token para poder ter acesso a elas.
 
 ### Detalhar Perfil do Usuário Logado
 #### `GET` `/usuario`
 Essa é a rota que será chamada quando o usuario quiser obter os dados do seu próprio perfil.
+#### Resposta:
+``` javascript
+{
+	"id": 1,
+	"nome": "José Mario",
+	"email": "josemario@email.com"
+}
+```
 
 ### Editar Perfil do Usuário Logado
 #### `PUT` `/usuario`
 Essa é a rota que será chamada quando o usuário quiser realizar alterações no seu próprio usuário.
+#### Exemplo da requisição:
+```javascript
+{
+	"nome": "Jose Mario Silva",
+	"email": "josemariosilva@email.com",
+	"senha": "!@#12JoseMa"
+}
+```
+#### Resposta:
+```javascript
+// No body returned for response
+```
 
 ### Listar Categorias
 #### `GET` `/categoria`
 Essa é a rota que será chamada quando o usuario logado quiser listar todas as categorias cadastradas.
+#### Resposta: (_existem mais categorias cadastradas mas essas são para exemplificar a resposta_)
+``` javascript
+[
+	{
+		"id": 1,
+		"descricao": "Alimentação"
+	},
+	{
+		"id": 2,
+		"descricao": "Assinaturas e Serviços"
+	},
+	{
+		"id": 3,
+		"descricao": "Casa"
+	},
+];
+```
 
 ### Listar Transações
 #### `GET` `/transacao`
 Essa é a rota que será chamada quando o usuario logado quiser listar todas as suas transações cadastradas.
+#### Resposta:
 
 ### Detalhar Transação
 #### `GET` `/transacao:id`
 Essa é a rota que será chamada quando o usuario logado quiser obter uma das suas transações cadastradas.
+#### Resposta:
 
 ### Cadastrar Transação
 #### `POST` `/transacao`
 Essa é a rota que será utilizada para cadastrar uma transação associada ao usuário logado.
+#### Exemplo da requisição:
+```javascript
+{
+	"descricao": "Salário caiu na conta",
+	"valor": 300000,
+	"categoria_id": "14",
+	"tipo": "entrada"
+}
+```
+#### Resposta:
+``` javacript
+{
+	"id": 1,
+	"tipo": "entrada",
+	"descricao": "Salário caiu na conta",
+	"valor": "300000",
+	"data": "2024-05-23T03:00:00.000Z",
+	"usuario_id": 1,
+	"categoria_id": 14,
+	"categoria_nome": "Salário"
+}
+```
 
 ### Editar Transação
 #### `PUT` `/transacao:id`
 Essa é a rota que será chamada quando o usuario logado quiser atualizar uma das suas transações cadastradas.
-
+#### Exemplo de requisição:
+``` javascript
+{
+	"descricao": "Salário acabou de cair na conta",
+	"valor": 300000,
+	"categoria_id": "14",
+	"tipo": "entrada"
+}
+```
+#### Resposta:
+``` javascript
+// No body returned for response
+```
 ### Remover Transação
 #### `DELETE` `/transacao:id`
 Essa é a rota que será chamada quando o usuario logado quiser excluir uma das suas transações cadastradas.
